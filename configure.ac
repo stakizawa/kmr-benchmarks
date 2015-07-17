@@ -6,10 +6,11 @@ AC_INIT([KMR Benchark], [0.1.0], [s.takizawa@gmail.com])
 AC_CONFIG_SRCDIR([Makefile])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([config.make])
+AC_CONFIG_MACRO_DIR([m4/])
+m4_include([m4/ax_mpi.m4])
 
 # Checks for programs.
 AC_PROG_CC
-sinclude(ax_mpi.m4)
 AX_MPI
 
 # Checks for libraries.

@@ -15,5 +15,6 @@ kmr_memory: kmr_memory.o
 
 clean:
 	-rm -f $(PRGS) $(OBJS)
+	-rm *~
 
 distclean: clean
