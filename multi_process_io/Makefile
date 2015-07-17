@@ -1,5 +1,7 @@
 include ../config.make
 
+LIBKMR=$(KMRDIR)/lib/libkmr.a
+
 PRGS=kmr_memory
 OBJS=kmr_memory.o
 
@@ -11,10 +13,10 @@ all: $(PRGS)
 	$(CC) $(DEFS) $(CFLAGS) -c $<
 
 kmr_memory: kmr_memory.o
-	$(CC) -o $@ $<
+	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
 
 clean:
 	-rm -f $(PRGS) $(OBJS)
-	-rm *~
+	-rm -f *~
 
 distclean: clean

@@ -10,7 +10,7 @@ configure: configure.ac m4/ax_mpi.m4 config.make.in
 
 clean:
 	cd multi_process_io; make clean
-	-rm *~
+	-rm -f *~
 
 distclean:
 	cd multi_process_io; make distclean

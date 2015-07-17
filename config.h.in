@@ -3,6 +3,9 @@
 /* Define if you have the MPI library. */
 #undef HAVE_MPI
 
+/* Define if OpenMP is enabled */
+#undef HAVE_OPENMP
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
