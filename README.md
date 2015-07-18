@@ -26,3 +26,9 @@ However path to an installed KMR should be given as a configure option.
 If you want to disable OpenMP support, give '--disable-openmp' option
 to the configure script.  This requires that the KMR is also build
 without OpenMP support.
+
+Benchmark Explanations
+----------------------
+
+### multi_process_io ###
+This is a synthetic benchmark for measuring data access performance.
