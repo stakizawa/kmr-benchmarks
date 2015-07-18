@@ -12,10 +12,17 @@ m4_include([m4/ax_openmp.m4])
 
 # Checks for programs.
 AC_PROG_CC
-AX_MPI
-AX_OPENMP
 
 # Checks for libraries.
+AX_MPI
+AC_ARG_ENABLE([openmp],
+	      [AS_HELP_STRING([--enable-openmp],
+			      [turn on openmp [default=yes]])],
+	      [], [enable_openmp=yes])
+if test "$enable_openmp" != "no"; then
+	AX_OPENMP
+fi
+AC_SUBST(OPENMP_CFLAGS)
 AC_ARG_WITH([kmr],
 	    [AS_HELP_STRING([--with-kmr=PATH],
 			    [set path for kmr [default=/usr/local]])],
@@ -29,7 +36,6 @@ CC=$MPICC
 CFLAGS="$CFLAGS -std=gnu99 -Wall -I $KMRDIR/include $OPENMP_CFLAGS"
 LDFLAGS="$OPENMP_CFLAGS $LDFLAGS"
 LIBS="$MPILIBS $LIBS"
-AC_SUBST(OPENMP_CFLAGS)
 
 # Checks for library functions.
 
