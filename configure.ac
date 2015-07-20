@@ -12,6 +12,13 @@ m4_include([m4/ax_openmp.m4])
 
 # Checks for programs.
 AC_PROG_CC
+AC_ARG_ENABLE([debug],
+	      [AS_HELP_STRING([--enable-debug],
+			      [turn on debugging [default=no]])],
+	      [], [enable_debug=no])
+if test "$enable_debug" = "yes"; then
+	CFLAGS="-DDEBUG $CFLAGS"
+fi
 
 # Checks for libraries.
 AX_MPI
