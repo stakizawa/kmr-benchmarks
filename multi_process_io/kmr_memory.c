@@ -10,6 +10,45 @@
 #include <kmr.h>
 #include "multi_process_io.h"
 
+static int
+add_initial_data(const struct kmr_kv_box kv,
+		 const KMR_KVS *kvi, KMR_KVS *kvo, void *p, long i_)
+{
+    keyval_t *keyval = (keyval_t *)p;
+    long *val = (long *)malloc(sizeof(long) * keyval->val_count);
+    for (int i = 0; i < keyval->val_count; i++) {
+	val[i] = keyval->rank;
+    }
+    struct kmr_kv_box nkv = { .klen = sizeof(char) * (strlen(keyval->key) + 1),
+			      .k.p = keyval->key,
+			      .vlen = sizeof(long) * keyval->val_count,
+			      .v.p = (void *)val };
+    kmr_add_kv(kvo, nkv);
+    return MPI_SUCCESS;
+}
+
+static int
+increment_in_memory_value(const struct kmr_kv_box kv,
+			  const KMR_KVS *kvi, KMR_KVS *kvo, void *p, long i_)
+{
+    keyval_t *keyval = (keyval_t *)p;
+    long *src = (long *)kv.v.p;
+    long *val = (long *)malloc(kv.vlen);
+    for (int i = 0; i < keyval->val_count; i++) {
+	val[i] = src[i] + 1;
+    }
+    struct kmr_kv_box nkv = { .klen = sizeof(char) * (strlen(keyval->key) + 1),
+			      .k.p = keyval->key,
+			      .vlen = kv.vlen,
+			      .v.p = (void *)val };
+    kmr_add_kv(kvo, nkv);
+#ifdef DEBUG
+    fprintf(stderr, "Rank[%d]: process key[%s]-val[%ld]\n",
+	    keyval->rank, (char *)kv.k.p, src[0]);
+#endif
+    return MPI_SUCCESS;
+}
+
 
 int
 main(int argc, char **argv)
