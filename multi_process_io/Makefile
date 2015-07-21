@@ -12,7 +12,7 @@ all: $(PRGS)
 .c.o:
 	$(CC) $(DEFS) $(CFLAGS) -c $<
 
-kmr_memory: kmr_memory.o
+kmr_memory: kmr_memory.o multi_process_io.h
 	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
 
 clean:
