@@ -84,14 +84,7 @@ main(int argc, char **argv)
     }
     free(data0);
 
-    if (rank == 0) {
-	double time_sum = 0.0;
-	for (int i = 0; i < ITERATIONS; i++) {
-	    time_sum += itr_times[i];
-	    printf("Iteration[%02d]  %f\n", i, itr_times[i]);
-	}
-	printf("Total  %f\n", time_sum);
-    }
+    print_time(itr_times, ITERATIONS, rank);
 
     MPI_Comm_free(&even_comm);
     MPI_Comm_free(&odd_comm);

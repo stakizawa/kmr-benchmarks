@@ -39,7 +39,7 @@ parse_param(int argc, char **argv, int *val_count)
     }
 }
 
-static int
+int
 measure_time(struct timeval *tv)
 {
     MPI_Barrier(MPI_COMM_WORLD);
@@ -50,11 +50,24 @@ measure_time(struct timeval *tv)
     return 0;
 }
 
-static double
+double
 calc_time_diff(struct timeval *tv_s, struct timeval *tv_e)
 {
     return ((double)tv_e->tv_sec - (double)tv_s->tv_sec)
         + ((double)tv_e->tv_usec - (double)tv_s->tv_usec) /1000000.0;
+}
+
+void
+print_time(double *times, int time_count, int rank)
+{
+    if (rank == 0) {
+	double time_sum = 0.0;
+	for (int i = 0; i < time_count; i++) {
+	    time_sum += times[i];
+	    printf("Iteration[%02d]  %f\n", i, times[i]);
+	}
+	printf("Total  %f\n", time_sum);
+    }
 }
 
 typedef struct {
