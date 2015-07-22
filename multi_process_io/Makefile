@@ -3,9 +3,9 @@ include ../config.make
 LIBKMR=$(KMRDIR)/lib/libkmr.a
 
 PRGS=kmr_memory ideal_memory less_locality_memory \
-     kmr_file ideal_file
+     kmr_file ideal_file less_locality_file
 OBJS=kmr_memory.o ideal_memory.o less_locality_memory.o \
-     kmr_file.o ideal_file.o
+     kmr_file.o ideal_file.o less_locality_file.o
 
 .PHONY: all clean distclean
 
@@ -27,6 +27,9 @@ kmr_file: kmr_file.o
 	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
 
 ideal_file: ideal_file.o
+	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
+
+less_locality_file: less_locality_file.o
 	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
 
 $(OBJS): multi_process_io.h

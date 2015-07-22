@@ -39,7 +39,7 @@ check_nprocs(int nprocs, int rank, int *task_nprocs)
 }
 
 void
-parse_param(int argc, char **argv, int *val_count)
+parse_param(int argc, char **argv, size_t *val_count)
 {
     *val_count = VAL_COUNT;
     if (argc == 2) {
@@ -127,7 +127,7 @@ delete_file(int rank, int iteration)
 
 typedef struct {
     char *key;
-    int val_count;
+    size_t val_count;
     int rank;
     size_t file_size;
     int iteration;
