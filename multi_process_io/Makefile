@@ -12,14 +12,16 @@ all: $(PRGS)
 .c.o:
 	$(CC) $(DEFS) $(CFLAGS) -c $<
 
-kmr_memory: kmr_memory.o multi_process_io.h
+kmr_memory: kmr_memory.o
 	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
 
-ideal: ideal.o multi_process_io.h
+ideal: ideal.o
 	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
 
-less_locality: less_locality.o multi_process_io.h
+less_locality: less_locality.o
 	$(CC) $(LDFLAGS) -o $@ $< $(LIBKMR)
+
+$(OBJS): multi_process_io.h
 
 clean:
 	-rm -f $(PRGS) $(OBJS)
