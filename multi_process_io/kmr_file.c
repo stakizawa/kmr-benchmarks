@@ -3,6 +3,13 @@
 
   Number of processes to run this program should be N^2, upto 10,000
   (N = 100).
+
+  This program accepts an argument that represents size of a file each
+  process generates in an iteration in MB.  The minimum file size is
+  1MB (specify 1) and the maximum file size is 1GB (specify 1024).
+  The default is 64MB.
+
+  $ mpiexec -np 64 ./less_locality_file 128
 */
 #include <stdio.h>
 #include <sys/time.h>

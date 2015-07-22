@@ -3,6 +3,14 @@
 
   Number of processes to run this program should be N^2, upto 10,000
   (N = 100).
+
+  This program accepts an argument that represents number of on-memory
+  data. The minimum number is 1 (specify 1) and the maximum number is
+  4,194,304 (specify 4194304).  The default is 1,048,576.  As each data
+  is a long integer, the size of consumed memory is sizeof(long) x number.
+  So that, it consumes 8MB (8 x 1,048,576) of memory in the default case.
+
+  $ mpiexec -np 64 ./less_locality_memory 2097152 (consumes 16MB)
 */
 #include <stdio.h>
 #include <sys/time.h>
