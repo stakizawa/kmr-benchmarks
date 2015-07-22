@@ -4,7 +4,8 @@
 #include <stdlib.h>
 
 #define KEY_LEN 12
-#define VAL_COUNT 1000
+#define VAL_COUNT     1048576  /* 8MB in long */
+#define MAX_VAL_COUNT 4194304  /* 32MB in long */
 #define ITERATIONS 10
 
 void
@@ -36,6 +37,11 @@ parse_param(int argc, char **argv, int *val_count)
 {
     if (argc == 2) {
 	*val_count = atoi(argv[1]);
+    }
+    if (*val_count > MAX_VAL_COUNT) {
+	fprintf(stderr, "value count should be less than %d.\n",
+		MAX_VAL_COUNT);
+	exit(1);
     }
 }
 

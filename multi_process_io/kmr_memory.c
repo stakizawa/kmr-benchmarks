@@ -61,6 +61,7 @@ main(int argc, char **argv)
     check_nprocs(nprocs, rank, &task_nprocs);
     kmr_init();
     KMR *mr = kmr_create_context(MPI_COMM_WORLD, MPI_INFO_NULL, 0);
+    mr->preset_block_size = MAX_VAL_COUNT * 8 * 4 + 1024;
 
     char even_key[KEY_LEN];
     char odd_key[KEY_LEN];
@@ -73,6 +74,7 @@ main(int argc, char **argv)
     parse_param(argc, argv, &(keyval0.val_count));
     keyval0.rank = rank;
     KMR_KVS *kvs0 = kmr_create_kvs(mr, KMR_KV_OPAQUE, KMR_KV_OPAQUE);
+    fprintf(stderr, "%ld\n", kvs0->c.element_size_limit);
     kmr_map_once(kvs0, &keyval0, kmr_noopt, 0, add_initial_data);
 
     double itr_times[ITERATIONS];
