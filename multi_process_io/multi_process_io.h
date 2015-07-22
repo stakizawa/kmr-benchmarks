@@ -2,10 +2,16 @@
 #define MULTI_PROCESS_IO_H
 
 #include <stdlib.h>
+#include <unistd.h>
+#include <assert.h>
 
 #define KEY_LEN 12
+#define FILENAME_LEN 64
 #define VAL_COUNT     1048576  /* 8MB in long */
 #define MAX_VAL_COUNT 4194304  /* 32MB in long */
+#define FILE_SIZE     64       /* 64MB */
+#define MAX_FILE_SIZE 1024     /* 1GB */
+#define IO_COUNT (1024 * 1024 / sizeof(long))
 #define ITERATIONS 10
 
 void
@@ -45,6 +51,20 @@ parse_param(int argc, char **argv, int *val_count)
     }
 }
 
+void
+parse_param_file(int argc, char **argv, size_t *file_size)
+{
+    *file_size = FILE_SIZE;
+    if (argc == 2) {
+	*file_size = atol(argv[1]);
+    }
+    if (*file_size > MAX_FILE_SIZE) {
+	fprintf(stderr, "file size should be less than %d.\n",
+		MAX_FILE_SIZE);
+	exit(1);
+    }
+}
+
 int
 measure_time(struct timeval *tv)
 {
@@ -76,10 +96,40 @@ print_time(double *times, int time_count, int rank)
     }
 }
 
+void
+create_file(int rank, int iteration, size_t size,
+	    char *filename, size_t filename_len)
+{
+    snprintf(filename, filename_len, "./%06d-%02d.dat", rank, iteration);
+    /* write 1MB at once */
+    long *buf = (long *)malloc(sizeof(long) * IO_COUNT);
+    for (int i = 0; i < IO_COUNT; i++) {
+	buf[i] = rank;
+    }
+
+    FILE *fp = fopen(filename, "w+");
+    assert(fp != 0);
+    for (int i = 0; i < size; i++) {
+	size_t cc = fwrite(buf, sizeof(long), IO_COUNT, fp);
+	assert(cc == IO_COUNT);
+    }
+    fclose(fp);
+}
+
+void
+delete_file(int rank, int iteration)
+{
+    char filename[FILENAME_LEN];
+    snprintf(filename, FILENAME_LEN, "./%06d-%02d.dat", rank, iteration);
+    unlink(filename);
+}
+
 typedef struct {
     char *key;
     int val_count;
     int rank;
+    size_t file_size;
+    int iteration;
 } common_t;
 
 #endif
