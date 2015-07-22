@@ -41,33 +41,33 @@ calc_pair(int even_recv, int odd_recv, int rank, int nprocs,
 }
 
 static void
-add_initial_data(long *data, keyval_t *keyval)
+add_initial_data(long *data, common_t *common)
 {
-    for (int i = 0; i < keyval->val_count; i++) {
-	data[i] = keyval->rank;
+    for (int i = 0; i < common->val_count; i++) {
+	data[i] = common->rank;
     }
 }
 
 static void
-increase_in_memory_value(long *din, long *dout, keyval_t *keyval,
+increase_in_memory_value(long *din, long *dout, common_t *common,
 			 int recv_from, int send_to)
 {
-    long *buf = (long *)malloc(sizeof(long) * keyval->val_count);
+    long *buf = (long *)malloc(sizeof(long) * common->val_count);
     MPI_Status stat;
-    MPI_Sendrecv(din, keyval->val_count, MPI_LONG, send_to, 1000,
-		 buf, keyval->val_count, MPI_LONG, recv_from, 1000,
+    MPI_Sendrecv(din, common->val_count, MPI_LONG, send_to, 1000,
+		 buf, common->val_count, MPI_LONG, recv_from, 1000,
 		 MPI_COMM_WORLD, &stat);
 
 #ifdef DEBUG
     fprintf(stderr, "Rank[%d]: process val[%ld]\n",
-    	    keyval->rank, buf[0]);
+    	    common->rank, buf[0]);
 #endif
-    for (int i = 0; i < keyval->val_count; i++) {
+    for (int i = 0; i < common->val_count; i++) {
 	buf[i] += 1;
     }
 
-    MPI_Sendrecv(buf, keyval->val_count, MPI_LONG, recv_from, 1001,
-		 dout, keyval->val_count, MPI_LONG, send_to, 1001,
+    MPI_Sendrecv(buf, common->val_count, MPI_LONG, recv_from, 1001,
+		 dout, common->val_count, MPI_LONG, send_to, 1001,
 		 MPI_COMM_WORLD, &stat);
 }
 
@@ -93,12 +93,12 @@ main(int argc, char **argv)
     calc_pair(even_recv_from, odd_recv_from, rank, nprocs,
 	      &even_send_to, &odd_send_to);
 
-    keyval_t keyval0;
-    keyval0.val_count = VAL_COUNT;
-    parse_param(argc, argv, &(keyval0.val_count));
-    keyval0.rank = rank;
-    long *data0 = (long *)malloc(sizeof(long) * keyval0.val_count);
-    add_initial_data(data0, &keyval0);
+    common_t common0;
+    common0.val_count = VAL_COUNT;
+    parse_param(argc, argv, &(common0.val_count));
+    common0.rank = rank;
+    long *data0 = (long *)malloc(sizeof(long) * common0.val_count);
+    add_initial_data(data0, &common0);
 
     double itr_times[ITERATIONS];
     for (int i = 0; i < ITERATIONS; i++) {
@@ -106,8 +106,8 @@ main(int argc, char **argv)
 	measure_time(&ts);
 	int recv_from = (i % 2 == 0) ? even_recv_from : odd_recv_from;
 	int send_to = (i % 2 == 0) ? even_send_to : odd_send_to;
-	long *data1 = (long *)malloc(sizeof(long) * keyval0.val_count);
-	increase_in_memory_value(data0, data1, &keyval0, recv_from, send_to);
+	long *data1 = (long *)malloc(sizeof(long) * common0.val_count);
+	increase_in_memory_value(data0, data1, &common0, recv_from, send_to);
 	free(data0);
 	struct timeval te;
 	measure_time(&te);

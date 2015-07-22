@@ -10,18 +10,18 @@
 #include "multi_process_io.h"
 
 static void
-add_initial_data(long *data, keyval_t *keyval)
+add_initial_data(long *data, common_t *common)
 {
-    for (int i = 0; i < keyval->val_count; i++) {
-	data[i] = keyval->rank;
+    for (int i = 0; i < common->val_count; i++) {
+	data[i] = common->rank;
     }
 }
 
 static void
-increase_in_memory_value(long *din, long *dout, keyval_t *keyval,
+increase_in_memory_value(long *din, long *dout, common_t *common,
 			 MPI_Comm comm)
 {
-    for (int i = 0; i < keyval->val_count; i++) {
+    for (int i = 0; i < common->val_count; i++) {
 	dout[i] = din[i] + 1;
     }
 #ifdef DEBUG
@@ -30,7 +30,7 @@ increase_in_memory_value(long *din, long *dout, keyval_t *keyval,
     int name_len;
     MPI_Comm_get_name(comm, comm_name, &name_len);
     fprintf(stderr, "Rank[%d]: process key[%s]-val[%ld]\n",
-    	    keyval->rank, comm_name, din[0]);
+    	    common->rank, comm_name, din[0]);
 #endif
 }
 
@@ -61,20 +61,20 @@ main(int argc, char **argv)
     MPI_Comm_set_name(odd_comm, odd_key);
 #endif
 
-    keyval_t keyval0;
-    keyval0.val_count = VAL_COUNT;
-    parse_param(argc, argv, &(keyval0.val_count));
-    keyval0.rank = rank;
-    long *data0 = (long *)malloc(sizeof(long) * keyval0.val_count);
-    add_initial_data(data0, &keyval0);
+    common_t common0;
+    common0.val_count = VAL_COUNT;
+    parse_param(argc, argv, &(common0.val_count));
+    common0.rank = rank;
+    long *data0 = (long *)malloc(sizeof(long) * common0.val_count);
+    add_initial_data(data0, &common0);
 
     double itr_times[ITERATIONS];
     for (int i = 0; i < ITERATIONS; i++) {
 	struct timeval ts;
 	measure_time(&ts);
 	MPI_Comm comm = (i % 2 == 0) ? even_comm : odd_comm;
-	long *data1 = (long *)malloc(sizeof(long) * keyval0.val_count);
-	increase_in_memory_value(data0, data1, &keyval0, comm);
+	long *data1 = (long *)malloc(sizeof(long) * common0.val_count);
+	increase_in_memory_value(data0, data1, &common0, comm);
 	free(data0);
 	struct timeval te;
 	measure_time(&te);

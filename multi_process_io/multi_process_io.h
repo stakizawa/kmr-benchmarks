@@ -80,6 +80,6 @@ typedef struct {
     char *key;
     int val_count;
     int rank;
-} keyval_t;
+} common_t;
 
 #endif
