@@ -70,7 +70,6 @@ main(int argc, char **argv)
 
     common_t common0;
     common0.key = even_key;
-    common0.val_count = VAL_COUNT;
     parse_param(argc, argv, &(common0.val_count));
     common0.rank = rank;
     KMR_KVS *kvs0 = kmr_create_kvs(mr, KMR_KV_OPAQUE, KMR_KV_OPAQUE);

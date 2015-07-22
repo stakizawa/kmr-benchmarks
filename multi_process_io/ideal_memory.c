@@ -62,7 +62,6 @@ main(int argc, char **argv)
 #endif
 
     common_t common0;
-    common0.val_count = VAL_COUNT;
     parse_param(argc, argv, &(common0.val_count));
     common0.rank = rank;
     long *data0 = (long *)malloc(sizeof(long) * common0.val_count);

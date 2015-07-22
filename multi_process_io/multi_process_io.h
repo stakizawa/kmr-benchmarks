@@ -41,6 +41,7 @@ check_nprocs(int nprocs, int rank, int *task_nprocs)
 void
 parse_param(int argc, char **argv, int *val_count)
 {
+    *val_count = VAL_COUNT;
     if (argc == 2) {
 	*val_count = atoi(argv[1]);
     }
