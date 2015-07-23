@@ -27,7 +27,7 @@ AC_ARG_ENABLE([openmp],
 			      [turn on openmp [default=yes]])],
 	      [], [enable_openmp=yes])
 if test "$enable_openmp" != "no"; then
-	AX_OPENMP
+	AX_OPENMP([OPENMP_CFLAGS=$ax_cv_c_openmp])
 fi
 AC_SUBST(OPENMP_CFLAGS)
 AC_ARG_WITH([kmr],

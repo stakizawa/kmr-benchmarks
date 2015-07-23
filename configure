@@ -3315,11 +3315,7 @@ else
   if test "x$ax_cv_c_openmp" != "xnone"; then
     OPENMP_CFLAGS=$ax_cv_c_openmp
   fi
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENMP 1
-_ACEOF
-
+  OPENMP_CFLAGS=$ax_cv_c_openmp
 fi
 
 fi
