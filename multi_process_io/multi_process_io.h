@@ -115,6 +115,7 @@ create_file(int rank, int iteration, size_t size,
 	assert(cc == IO_COUNT);
     }
     fclose(fp);
+    free(buf);
 }
 
 void

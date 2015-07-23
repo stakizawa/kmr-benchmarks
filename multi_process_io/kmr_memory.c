@@ -32,6 +32,7 @@ add_initial_data(const struct kmr_kv_box kv,
 			      .vlen = sizeof(long) * common->val_count,
 			      .v.p = (void *)val };
     kmr_add_kv(kvo, nkv);
+    free(val);
     return MPI_SUCCESS;
 }
 
@@ -50,6 +51,7 @@ increment_in_memory_value(const struct kmr_kv_box kv,
 			      .vlen = kv.vlen,
 			      .v.p = (void *)val };
     kmr_add_kv(kvo, nkv);
+    free(val);
 #ifdef DEBUG
     fprintf(stderr, "Rank[%d]: process key[%s]-val[%ld]\n",
 	    common->rank, (char *)kv.k.p, src[0]);

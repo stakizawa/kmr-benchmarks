@@ -58,6 +58,7 @@ increment_in_file_value(const struct kmr_kv_box kv,
 	cc = fwrite(buf, sizeof(long), IO_COUNT, ofp);
 	assert(cc == IO_COUNT);
     }
+    free(buf);
     fclose(ofp);
 
     struct kmr_kv_box nkv = { .klen = sizeof(char) * (strlen(common->key) + 1),
