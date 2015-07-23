@@ -12,7 +12,7 @@
 #define FILE_SIZE     64       /* 64MB */
 #define MAX_FILE_SIZE 1024     /* 1GB */
 #define IO_COUNT (1024 * 1024 / sizeof(long))
-#define ITERATIONS 10
+#define ITERATIONS 20
 
 void
 check_nprocs(int nprocs, int rank, int *task_nprocs)
