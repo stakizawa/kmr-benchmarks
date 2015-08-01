@@ -15,7 +15,7 @@ AC_PROG_CC
 ! (type fccpx 1>/dev/null 2>/dev/null); fujitsu_env=$?
 if test "$fujitsu_env" -eq "1"; then
    CC=fccpx
-   LD=frtpx
+   LD=ldpx
    CFLAGS=""
 fi
 
@@ -29,6 +29,7 @@ if test "$enable_debug" = "yes"; then
 fi
 
 # Checks MPI
+AC_LANG(C)
 AX_MPI
 
 # Checks OpenMP
