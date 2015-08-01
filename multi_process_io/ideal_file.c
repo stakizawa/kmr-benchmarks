@@ -50,6 +50,7 @@ increase_in_file_value(common_t *common, MPI_Comm comm)
 	cc = fwrite(buf, sizeof(long), IO_COUNT, ofp);
 	assert(cc == IO_COUNT);
     }
+    free(buf);
     fclose(ofp);
 #ifdef DEBUG
     MPI_Barrier(comm);

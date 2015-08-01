@@ -109,6 +109,7 @@ increase_in_file_value(common_t *common, int recv_from, int send_to)
     free(rbuf);
     fclose(ofp);
 
+    free(buf);
     delete_file(common->rank, common->iteration);
 }
 

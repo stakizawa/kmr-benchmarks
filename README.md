@@ -25,7 +25,8 @@ However path to an installed KMR should be given as a configure option.
 
 If you want to disable OpenMP support, give '--disable-openmp' option
 to the configure script.  This requires that the KMR is also build
-without OpenMP support.
+without OpenMP support.  To enable debug mode, specify '--enable-debug'
+option to the configure script.
 
 Benchmark Explanations
 ----------------------

@@ -77,6 +77,7 @@ increase_in_memory_value(long *din, long *dout, common_t *common,
     MPI_Sendrecv(buf, common->val_count, MPI_LONG, recv_from, 1001,
 		 dout, common->val_count, MPI_LONG, send_to, 1001,
 		 MPI_COMM_WORLD, &stat);
+    free(buf);
 }
 
 
