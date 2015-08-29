@@ -91,6 +91,8 @@ main(int argc, char **argv)
     check_nprocs(nprocs, rank, &task_nprocs);
     kmr_init();
     KMR *mr = kmr_create_context(MPI_COMM_WORLD, MPI_INFO_NULL, 0);
+    mr->verbosity = 5;
+    mr->trace_map_mp = 1;
 
     char even_key[KEY_LEN];
     char odd_key[KEY_LEN];
